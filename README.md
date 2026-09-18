@@ -227,3 +227,35 @@ Security groups restrict communication between architecture layers:
 - **Database Security Group:** Allows MySQL port 3306 only from the Application Security Group
 - EC2 application instances do not require public IP addresses
 - RDS is not publicly accessible
+
+Perfect. ✅ That section is committed.
+Step 14 — Final README section
+Edit README.md one last time and add this at the bottom:
+## Key Learnings
+
+- Designed a custom VPC with separate public, private application, and private database network tiers
+- Deployed application infrastructure across two Availability Zones
+- Configured an Application Load Balancer with health-based traffic distribution
+- Implemented EC2 Auto Scaling with CPU-based target tracking
+- Validated automatic scale-out from 2 to 4 instances and scale-in back to 2
+- Configured private EC2-to-RDS MySQL connectivity using Security Group references
+- Troubleshot ALB target health and EC2-to-RDS connectivity failures
+- Configured CloudWatch monitoring with SNS email notifications
+- Configured Route 53 DNS delegation and an ALB Alias record
+- Issued and validated an ACM certificate using DNS validation
+- Enabled HTTPS access to the application through the custom domain
+- Used AWS Systems Manager Session Manager to manage private EC2 instances without public IP addresses
+
+## Project Status
+
+**Completed.**
+
+The project demonstrates the deployment, monitoring, scaling, security, troubleshooting, and validation of a multi-tier AWS web application architecture.
+
+The application tier is highly available across two Availability Zones and automatically adjusts capacity based on CPU utilization. The database remains private and access is restricted to the application tier.
+
+The application was successfully validated through the custom HTTPS endpoint:
+
+`https://app.goldenodisha.space`
+
+> The RDS instance used for this lab is Single-AZ. A production implementation could extend the data
