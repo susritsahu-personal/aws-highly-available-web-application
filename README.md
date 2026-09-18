@@ -55,6 +55,41 @@ The application tier uses an EC2 Auto Scaling Group to maintain application avai
 
 A target tracking scaling policy was configured using average EC2 CPU utilization. The Auto Scaling Group can adjust capacity within the configured 2–4 instance limits based on application load.
 
+## Monitoring & Alerting
+
+Amazon CloudWatch was used to monitor the health of the application infrastructure.
+
+A custom alarm named `Project3-ALB-Unhealthy-Targets` monitors the `UnHealthyHostCount` metric for `Project3-App-TG`.
+
+### Alarm Configuration
+
+- Metric: `UnHealthyHostCount`
+- Statistic: Maximum
+- Period: 1 minute
+- Threshold: Greater than or equal to 1
+- Datapoints to alarm: 1 out of 1
+- Missing data: Treated as not breaching
+- Notification: Amazon SNS email alert
+
+### Monitoring Test
+
+The ALB health check path was temporarily changed to an invalid path to simulate unhealthy application targets.
+
+The test successfully demonstrated:
+
+1. ALB targets changed from Healthy to Unhealthy.
+2. `UnHealthyHostCount` increased.
+3. The CloudWatch alarm entered the ALARM state.
+4. Amazon SNS delivered an email notification.
+5. The correct health check path was restored.
+6. Targets recovered and the CloudWatch alarm returned to OK.
+
+### Monitoring Evidence
+
+![CloudWatch unhealthy target alarm](screenshots/project3-cloudwatch-unhealthy-target-alarm.png)
+
+![CloudWatch alarm recovered](screenshots/project3-cloudwatch-alarm-recovered.png)
+
 ### Load Balancing
 
 `Project3-ALB` distributes incoming requests across healthy application instances registered with `Project3-App-TG`.
