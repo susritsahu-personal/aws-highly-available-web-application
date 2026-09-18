@@ -61,6 +61,46 @@ Amazon CloudWatch was used to monitor the health of the application infrastructu
 
 A custom alarm named `Project3-ALB-Unhealthy-Targets` monitors the `UnHealthyHostCount` metric for `Project3-App-TG`.
 
+## Auto Scaling Test
+
+A target tracking scaling policy was configured for `Project3-App-ASG` using average CPU utilization with a target value of 50%.
+
+To validate automatic scaling, CPU load was intentionally generated on the two application instances.
+
+### Scale-Out Test
+
+The application tier initially operated with:
+
+- Desired capacity: 2
+- Minimum capacity: 2
+- Maximum capacity: 4
+
+Sustained high CPU utilization triggered the target tracking policy. Auto Scaling automatically increased the desired capacity from 2 to 4 and launched two additional EC2 instances.
+
+All four instances became healthy and InService behind the Application Load Balancer.
+
+![CPU triggered scale-out](screenshots/project3-auto-scaling-cpu-scale-out.png)
+
+![Four Auto Scaling instances](screenshots/project3-asg-scale-out-4-instances.png)
+
+### Scale-In Test
+
+After the artificial CPU load was stopped, utilization decreased.
+
+The target tracking policy automatically reduced capacity from 4 back to the baseline of 2 instances. The additional instances were drained from the load balancer and terminated by Auto Scaling.
+
+![Automatic scale-in](screenshots/project3-auto-scaling-scale-in.png)
+
+![Scale-in complete](screenshots/project3-asg-scale-in-complete.png)
+
+### Result
+
+The test demonstrated automatic capacity adjustment based on application load:
+
+**2 instances → High CPU → Scale out to 4 → CPU normalized → Scale in to 2**
+
+The Auto Scaling Group maintained healthy application capacity across two Availability Zones throughout the test.
+
 ### Alarm Configuration
 
 - Metric: `UnHealthyHostCount`
