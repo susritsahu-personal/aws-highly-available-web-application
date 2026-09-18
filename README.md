@@ -67,6 +67,68 @@ A target tracking scaling policy was configured for `Project3-App-ASG` using ave
 
 To validate automatic scaling, CPU load was intentionally generated on the two application instances.
 
+## Private Database Tier
+
+Amazon RDS for MySQL provides the database tier for the application architecture.
+
+### Database Configuration
+
+- RDS MySQL deployed inside `Project3-VPC`
+- Database placed in a private database subnet
+- DB subnet group spans two Availability Zones
+- Public accessibility disabled
+- MySQL port: 3306
+- `Project3-DB-SG` allows MySQL traffic only from `Project3-App-SG`
+- Application-to-database connectivity was validated from a private EC2 instance
+
+The RDS instance used for this lab is Single-AZ to control lab costs. The database subnet group spans two Availability Zones, allowing the architecture to be extended to a Multi-AZ database deployment for production use.
+
+![Private RDS database](screenshots/project3-rds-private-database-final.png)
+
+## Route 53, ACM & HTTPS
+
+A custom domain and TLS certificate were configured to provide secure access to the application.
+
+### DNS & HTTPS Configuration
+
+- Domain: `goldenodisha.space`
+- Application endpoint: `app.goldenodisha.space`
+- Route 53 public hosted zone configured for the domain
+- Domain nameservers delegated to Route 53
+- Route 53 Alias A record points `app.goldenodisha.space` to `Project3-ALB`
+- Public ACM certificate issued for `app.goldenodisha.space`
+- HTTPS listener configured on ALB port 443
+- `Project3-ALB-SG` allows HTTPS port 443 from the internet
+- HTTPS traffic is forwarded from the ALB to healthy application targets
+
+### HTTPS Validation
+
+The application was successfully accessed using:
+
+`https://app.goldenodisha.space`
+
+The browser successfully established a secure HTTPS connection using the ACM certificate.
+
+![HTTPS custom domain](screenshots/project3-https-custom-domain-success.png)
+
+![ALB HTTP and HTTPS listeners](screenshots/project3-alb-http-https-listeners.png)
+
+## Troubleshooting Scenarios
+
+Two infrastructure failures were intentionally introduced and resolved to practice systematic AWS troubleshooting.
+
+### Incident 1 — ALB Target Health Check Failure
+
+Application Security Group access from the ALB was removed, causing target health checks to time out and both application instances to become unhealthy. Restoring HTTP port 80 access from `Project3-ALB-SG` recovered the targets.
+
+[View detailed incident documentation](documentation/incident-1-alb-health-check-failure.md)
+
+### Incident 2 — EC2 to RDS Connectivity Failure
+
+MySQL port 3306 access from the application tier was removed from the Database Security Group, causing EC2-to-RDS connectivity to fail. Restoring access from `Project3-App-SG` recovered the database connection.
+
+[View detailed incident documentation](documentation/incident-2-rds-connectivity-failure.md)
+
 ### Scale-Out Test
 
 The application tier initially operated with:
