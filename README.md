@@ -34,6 +34,33 @@ CloudWatch and SNS were used for health monitoring and alerting. Route 53 and AW
 
 The infrastructure is deployed inside a custom VPC and separates public, application, and database resources into different network tiers.
 
+Perfect. ✅ Architecture section is done.
+Step 4 — Add Auto Scaling & High Availability
+Edit README.md again and add this below the Architecture section:
+## Auto Scaling & High Availability
+
+The application tier uses an EC2 Auto Scaling Group to maintain application availability across two Availability Zones.
+
+### Auto Scaling Configuration
+
+- Launch Template: `Project3-App-LT`
+- Auto Scaling Group: `Project3-App-ASG`
+- Desired capacity: 2 instances
+- Minimum capacity: 2 instances
+- Maximum capacity: 4 instances
+- Instances distributed across `ap-south-1a` and `ap-south-1b`
+- EC2 and ELB health checks enabled
+- Auto Scaling instances automatically install and start Nginx using launch template user data
+- Instances automatically register with `Project3-App-TG`
+
+A target tracking scaling policy was configured using average EC2 CPU utilization. The Auto Scaling Group can adjust capacity within the configured 2–4 instance limits based on application load.
+
+### Load Balancing
+
+`Project3-ALB` distributes incoming requests across healthy application instances registered with `Project3-App-TG`.
+
+The target group health checks ensure that traffic is sent only to healthy application instances.
+
 ### Network Design
 
 - Custom VPC: `20.0.0.0/16`
