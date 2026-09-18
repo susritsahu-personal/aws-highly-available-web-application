@@ -10,7 +10,11 @@ The application tier runs across two Availability Zones and is managed by an Aut
 
 CloudWatch and SNS were used for health monitoring and alerting. Route 53 and AWS Certificate Manager were used to provide custom-domain access over HTTPS.
 
-> **Note:** The application tier is deployed across multiple Availability Zones. The RDS database instance used for this lab is Single-AZ to control lab costs.
+## Architecture Diagram
+
+The diagram below shows the multi-tier AWS architecture implemented in this project, including the multi-AZ application tier, private database tier, load balancing, Auto Scaling, monitoring, DNS, and HTTPS.
+
+![Highly Available AWS Web Application Architecture](architecture-diagram.png)
 
 ## AWS Services & Technologies
 
