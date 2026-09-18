@@ -34,9 +34,6 @@ CloudWatch and SNS were used for health monitoring and alerting. Route 53 and AW
 
 The infrastructure is deployed inside a custom VPC and separates public, application, and database resources into different network tiers.
 
-Perfect. ✅ Architecture section is done.
-Step 4 — Add Auto Scaling & High Availability
-Edit README.md again and add this below the Architecture section:
 ## Auto Scaling & High Availability
 
 The application tier uses an EC2 Auto Scaling Group to maintain application availability across two Availability Zones.
@@ -228,9 +225,6 @@ Security groups restrict communication between architecture layers:
 - EC2 application instances do not require public IP addresses
 - RDS is not publicly accessible
 
-Perfect. ✅ That section is committed.
-Step 14 — Final README section
-Edit README.md one last time and add this at the bottom:
 ## Key Learnings
 
 - Designed a custom VPC with separate public, private application, and private database network tiers
