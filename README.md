@@ -29,3 +29,37 @@ CloudWatch and SNS were used for health monitoring and alerting. Route 53 and AW
 - Internet Gateway
 - Linux / Amazon Linux 2023
 - Nginx
+
+## Architecture
+
+The infrastructure is deployed inside a custom VPC and separates public, application, and database resources into different network tiers.
+
+### Network Design
+
+- Custom VPC: `20.0.0.0/16`
+- Two public subnets across two Availability Zones for the internet-facing ALB
+- Two private application subnets across two Availability Zones for EC2 Auto Scaling instances
+- Two private database subnets for the RDS DB subnet group
+- Internet Gateway for public connectivity
+- NAT Gateway for outbound internet access from the private application tier
+- Separate route tables for public, private application, and private database subnets
+
+### Application Traffic Flow
+
+Internet User  
+→ Route 53 (`app.goldenodisha.space`)  
+→ HTTPS / ACM Certificate  
+→ Application Load Balancer  
+→ Target Group  
+→ Auto Scaling EC2 Instances in Private Subnets  
+→ Amazon RDS MySQL in Private Database Subnet
+
+### Security Design
+
+Security groups restrict communication between architecture layers:
+
+- **ALB Security Group:** Allows HTTP/HTTPS traffic from the internet
+- **Application Security Group:** Allows HTTP port 80 only from the ALB Security Group
+- **Database Security Group:** Allows MySQL port 3306 only from the Application Security Group
+- EC2 application instances do not require public IP addresses
+- RDS is not publicly accessible
