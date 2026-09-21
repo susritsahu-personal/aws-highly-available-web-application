@@ -244,6 +244,37 @@ Security groups restrict communication between architecture layers:
 - Enabled HTTPS access to the application through the custom domain
 - Used AWS Systems Manager Session Manager to manage private EC2 instances without public IP addresses
 
+## Repository Structure
+
+```text
+aws-highly-available-web-application/
+├── README.md
+├── architecture-diagram.png
+├── documentation/
+│   ├── incident-1-alb-health-check-failure.md
+│   └── incident-2-rds-connectivity-failure.md
+└── screenshots/
+    ├── README.md
+    ├── incident-1-alb-targets-recovered.png
+    ├── incident-1-alb-targets-unhealthy.png
+    ├── incident-2-rds-connectivity-failure.png
+    ├── incident-2-rds-connectivity-recovered.png
+    ├── project3-alb-http-https-listeners.png
+    ├── project3-asg-before-scale-out.png
+    ├── project3-asg-multi-az-configuration.png
+    ├── project3-asg-scale-in-complete.png
+    ├── project3-asg-scale-out-4-instances.png
+    ├── project3-auto-scaling-cpu-scale-out.png
+    ├── project3-auto-scaling-scale-in.png
+    ├── project3-cloudwatch-alarm-recovered.png
+    ├── project3-cloudwatch-alb-health-alarm-ok.png
+    ├── project3-cloudwatch-unhealthy-target-alarm.png
+    ├── project3-cloudwatch-unhealthy-targets-test.png
+    ├── project3-final-multi-az-healthy-targets.png
+    ├── project3-https-custom-domain-success.png
+    └── project3-rds-private-database-final.png
+```
+
 ## Project Status
 
 **Completed.**
